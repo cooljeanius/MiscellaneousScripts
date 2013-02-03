@@ -26,12 +26,12 @@ echo "• Disabling quarantine…"
 defaults write kCFPreferencesAnyUser kCFPreferencesCurrentHost "com.apple.LaunchServices" "LSQuarantine"  0
 if [ "`whoami`" = "root" ]; then
 	xattr -d -r com.apple.quarantine ./*
-	if [ -d /Volumes/NO\ NAME ]; then
+	if [ -d /Volumes/NO\ NAME/Portable_Between_School_Library_Computers ]; then
 		xattr -d -r com.apple.quarantine /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/*
 	fi
 else
 	xattr -d com.apple.quarantine ./*
-	if [ -d /Volumes/NO\ NAME ]; then
+	if [ -d /Volumes/NO\ NAME/Portable_Between_School_Library_Computers ]; then
 		xattr -d com.apple.quarantine /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/*
 	fi
 fi
@@ -145,7 +145,7 @@ defaults write kCFPreferencesCurrentUser kCFPreferencesAnyHost "org.x.X11" "noli
 defaults write kCFPreferencesCurrentUser kCFPreferencesAnyHost "com.apple.x11" "wm_click_through"  -1
 defaults write kCFPreferencesCurrentUser kCFPreferencesAnyHost "org.x.X11" "wm_window_shading"  -1
 
-if [ -d /Volumes/NO\ NAME ]; then 
+if [ -d /Volumes/NO\ NAME/Portable_Between_School_Library_Computers ]; then 
 	echo "Copying stuff from thumb drive…"
 	if [ -d ~/Applications ]; then
 		echo "•=> Copying applications…"
@@ -254,14 +254,17 @@ if [ "`whoami`" = "root" ]; then
 	killall -vz scheduledScanner
 	killall -vz NortonMissedTasks
 	killall -vz SAVDiskMountNotify
+	killall -vz Symantec\ QuickMenu
 	killall -vz jlucaller
 	killall -vz syguard
 	killall -vz MachineRenamer
 	killall -vz parentalcontrolsd
 	killall -vz jamfAgent
+	killall -vz FindMyMacd
 	launchctl remove edu.northwestern.mmlc.MachineRenamer
 	launchctl remove com.jamfsoftware.jamf.daemon
 	launchctl remove com.jamfsoftware.task.Every\ 5\ Minutes
+	launchctl remove com.apple.familycontrols
 	if [ -d /Library/LaunchDaemons ]; then
 		launchctl unload -w /Library/Launch*/com.jamfsoftware.*.plist
 		launchctl unload -w /Library/Launch*/edu.northwestern.*.plist
@@ -303,7 +306,9 @@ echo "pwd = `pwd`"
 open ~/
 open -g /Applications/Utilities/Console.app
 open -g /Applications/Utilities/Activity\ Monitor.app
-open -g ~/Applications/Jumpcut.app
+if [ -e ~/Applications/Jumpcut.app ]; then
+	open -g ~/Applications/Jumpcut.app
+fi
 osascript -e "tell application \"Finder\"" -e "empty trash" -e "end tell"
 find ./ -name .DS_Store -delete
 if [ -d /Volumes/NO\ NAME ]; then
