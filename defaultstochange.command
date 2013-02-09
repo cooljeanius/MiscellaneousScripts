@@ -151,7 +151,7 @@ if [ -d /Volumes/NO\ NAME/ ]; then
 		if [ -d ~/Applications ]; then
 			echo "•=> Copying applications…"
 		else
-			mkdir -v ~/Applications
+			echo "mkdir -v `mkdir -v ~/Applications`"
 			echo "•=> Copying applications…"
 		fi
 		cp -Rvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Applications/* ~/Applications
@@ -161,20 +161,20 @@ if [ -d /Volumes/NO\ NAME/ ]; then
 		if [ -d ~/Library ]; then
 			echo "•=> Copying Library items…"
 		else
-			mkdir -v ~/Library
+			"mkdir -v `mkdir -v ~/Library`"
 			echo "•=> Copying Library items…"
 		fi
 		if [ -f ~/Library/Components ]; then
-			rm -rfv ~/Library/Components
+			echo "rm -rfv `rm -rfv ~/Library/Components`"
 		fi
 		if [ -f ~/Library/QuickLook ]; then
-			rm -rfv ~/Library/QuickLook
+			echo "rm -rfv `rm -rfv ~/Library/QuickLook`"
 		fi
 		if [ -f ~/Library/KeyBindings ]; then
-			rm -rfv ~/Library/KeyBindings
+			echo "rm -rfv `rm -rfv ~/Library/KeyBindings`"
 		fi
 		if [ -f ~/Library/Application\ Support/iCloud ]; then
-			rm -rfv ~/Library/Application\ Support/iCloud
+			echo "rm -rfv `rm -rfv ~/Library/Application\ Support/iCloud`"
 		fi
 		cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Library/* ~/Library
 		if [ -d ~/Music/iTunes ]; then
@@ -187,7 +187,7 @@ if [ -d /Volumes/NO\ NAME/ ]; then
 		if [ -d ~/Downloads ]; then
 			echo "•=> Copying downloads…"
 		else
-			mkdir -v ~/Downloads
+			"mkdir -v `mkdir -v ~/Downloads`"
 			echo "•=> Copying downloads…"
 		fi
 		cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Downloads/* ~/Downloads
@@ -265,10 +265,21 @@ if [ "`whoami`" = "root" ]; then
 	killall -vz parentalcontrolsd
 	killall -vz jamfAgent
 	killall -vz FindMyMacd
-	launchctl remove edu.northwestern.mmlc.MachineRenamer
-	launchctl remove com.jamfsoftware.jamf.daemon
-	launchctl remove com.jamfsoftware.task.Every\ 5\ Minutes
-	launchctl remove com.apple.familycontrols
+    if [ ! -d /Volumes/NO\ NAME ]; then
+        killall -vz diskimages-helper
+    fi
+    if [ ! -z "`launchctl list | grep edu.northwestern.mmlc.MachineRenamer`" ]; then
+        launchctl remove edu.northwestern.mmlc.MachineRenamer
+    fi
+    if [ ! -z "`launchctl list | grep com.jamfsoftware.jamf.daemon`" ]; then
+        launchctl remove com.jamfsoftware.jamf.daemon
+    fi
+    if [ ! -z "`launchctl list | grep com.jamfsoftware.task.Every\ 5\ Minutes`" ]; then
+        launchctl remove com.jamfsoftware.task.Every\ 5\ Minutes
+    fi
+    if [ ! -z "`launchctl list | grep com.apple.familycontrols`" ]; then
+        launchctl remove com.apple.familycontrols
+    fi
 	if [ -d /Library/LaunchDaemons ]; then
 		launchctl unload -w /Library/Launch*/com.jamfsoftware.*.plist
 		launchctl unload -w /Library/Launch*/edu.northwestern.*.plist
@@ -277,46 +288,46 @@ if [ "`whoami`" = "root" ]; then
 		launchctl unload -w /Library/Launch*/com.symantec.*.plist
 	fi
 	if [ -d /Library/StartupItems/SymProtector ]; then
-		rm -rfv /Library/StartupItems/SymProtector
+		echo "rm -rfv `rm -rfv /Library/StartupItems/SymProtector`"
 	fi 
 	if [ -d /Library/StartupItems/SMC ]; then
-		rm -rfv /Library/StartupItems/SMC
+		echo "rm -rfv `rm -rfv /Library/StartupItems/SMC`"
 	fi
 	if [ -d /Library/StartupItems/SymAutoProtect ]; then
-		rm -rfv /Library/StartupItems/SymAutoProtect
+		echo "rm -rfv `rm -rfv /Library/StartupItems/SymAutoProtect`"
 	fi
 	if [ -d /Library/StartupItems/NortonMissedTasks ]; then
-		rm -rfv /Library/StartupItems/NortonMissedTasks
+		echo "rm -rfv `rm -rfv /Library/StartupItems/NortonMissedTasks`"
 	fi
 	if [ -d /Library/StartupItems/KeyAccess ]; then
-		rm -rfv /Library/StartupItems/KeyAccess
+		echo "rm -rfv `rm -rfv /Library/StartupItems/KeyAccess`"
 	fi
 	if [ -d /Library/Contextual\ Menu\ Items  ]; then
-		rm -rfv /Library/Contextual\ Menu\ Items
+		echo "rm -rfv `rm -rfv /Library/Contextual\ Menu\ Items`"
 	fi
 	if [ -d /Library/Documentaion/Help/Norton\ Help\ Scripts  ]; then
-		rm -rfv /Library/Documentaion/Help/Norton\ Help\ Scripts
+		echo "rm -rfv `rm -rfv /Library/Documentaion/Help/Norton\ Help\ Scripts`"
 	fi
 	if [ -d /var/at/tabs ]; then
-		rm -rfv /var/at/tabs
+		echo "rm -rfv `rm -rfv /var/at/tabs`"
 	fi
 	if [ ! -d /usr/lib/cron/tabs ]; then
-		mkdir -pv /usr/lib/cron/tabs
+		echo "mkdir -pv `mkdir -pv /usr/lib/cron/tabs`"
 	fi
 	if [ -d /var/db/com.symantec ]; then
-		rm -rfv /var/db/com.symantec
+		echo "rm -rfv `rm -rfv /var/db/com.symantec`"
 	fi
 	if [ -d /var/db/RemoteManagement ]; then
-		rm -rfv /var/db/RemoteManagement
+		echo "rm -rfv `rm -rfv /var/db/RemoteManagement`"
 	fi
 	if [ -d /Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic ]; then
-		rm -rfv /Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic
+		echo "rm -rfv `rm -rfv /Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic`"
 	fi
 else
 	echo "Processes and other stuff belonging to root left alone"
 fi
 
-echo "• Doing final setup now…"
+echo "• Doing final cleanup/setup now…"
 echo "whoami = `whoami`"
 echo "pwd = `pwd`"
 open ~/
@@ -332,7 +343,11 @@ if [ -d /Volumes/NO\ NAME ]; then
 fi
 open /Applications/Utilities/Terminal.app
 if [ -d ~/deepfreeze ]; then
+    echo "rmdir ~/deepfreeze"
 	rmdir ~/deepfreeze
+fi
+if [ ! -z "`which purge`" ]; then
+    purge
 fi
 if [ -f ~/.profile ]; then
 	. ~/.profile
