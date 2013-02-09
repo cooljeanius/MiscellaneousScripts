@@ -145,51 +145,55 @@ defaults write kCFPreferencesCurrentUser kCFPreferencesAnyHost "org.x.X11" "noli
 defaults write kCFPreferencesCurrentUser kCFPreferencesAnyHost "com.apple.x11" "wm_click_through"  -1
 defaults write kCFPreferencesCurrentUser kCFPreferencesAnyHost "org.x.X11" "wm_window_shading"  -1
 
-if [ -d /Volumes/NO\ NAME/Portable_Between_School_Library_Computers ]; then 
-	echo "Copying stuff from thumb drive…"
-	if [ -d ~/Applications ]; then
-		echo "•=> Copying applications…"
+if [ -d /Volumes/NO\ NAME/ ]; then
+	if [ -d /Volumes/NO\ NAME/Portable_Between_School_Library_Computers ]; then 
+		echo "Copying stuff from thumb drive…"
+		if [ -d ~/Applications ]; then
+			echo "•=> Copying applications…"
+		else
+			mkdir -v ~/Applications
+			echo "•=> Copying applications…"
+		fi
+		cp -Rvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Applications/* ~/Applications
+		echo "•=> Copying dotfiles…"
+		cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/my_dotfiles/chrooted/ ~/
+		chmod -v -x ~/.bash_profile ~/.gitconfig ~/.CFUserTextEncoding ~/.viminfo ~/.Xauthority ~/.bash_history
+		if [ -d ~/Library ]; then
+			echo "•=> Copying Library items…"
+		else
+			mkdir -v ~/Library
+			echo "•=> Copying Library items…"
+		fi
+		if [ -f ~/Library/Components ]; then
+			rm -rfv ~/Library/Components
+		fi
+		if [ -f ~/Library/QuickLook ]; then
+			rm -rfv ~/Library/QuickLook
+		fi
+		if [ -f ~/Library/KeyBindings ]; then
+			rm -rfv ~/Library/KeyBindings
+		fi
+		if [ -f ~/Library/Application\ Support/iCloud ]; then
+			rm -rfv ~/Library/Application\ Support/iCloud
+		fi
+		cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Library/* ~/Library
+		if [ -d ~/Music/iTunes ]; then
+			echo "•=> Copying iTunes music…"
+		else
+			mkdir -pv ~/Music/iTunes
+			"•=> Copying iTunes music…"
+		fi
+		cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Music/iTunes/* ~/Music/iTunes
+		if [ -d ~/Downloads ]; then
+			echo "•=> Copying downloads…"
+		else
+			mkdir -v ~/Downloads
+			echo "•=> Copying downloads…"
+		fi
+		cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Downloads/* ~/Downloads
 	else
-		mkdir -v ~/Applications
-		echo "•=> Copying applications…"
+		echo "•=> Portable USB drive found, but it doesn't look like the right one."
 	fi
-	cp -Rvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Applications/* ~/Applications
-	echo "•=> Copying dotfiles…"
-	cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/my_dotfiles/chrooted/ ~/
-	chmod -v -x ~/.bash_profile ~/.gitconfig ~/.CFUserTextEncoding ~/.viminfo ~/.Xauthority ~/.bash_history
-	if [ -d ~/Library ]; then
-		echo "•=> Copying Library items…"
-	else
-		mkdir -v ~/Library
-		echo "•=> Copying Library items…"
-	fi
-	if [ -f ~/Library/Components ]; then
-		rm -rfv ~/Library/Components
-	fi
-	if [ -f ~/Library/QuickLook ]; then
-		rm -rfv ~/Library/QuickLook
-	fi
-	if [ -f ~/Library/KeyBindings ]; then
-		rm -rfv ~/Library/KeyBindings
-	fi
-	if [ -f ~/Library/Application\ Support/iCloud ]; then
-		rm -rfv ~/Library/Application\ Support/iCloud
-	fi
-	cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Library/* ~/Library
-	if [ -d ~/Music/iTunes ]; then
-		echo "•=> Copying iTunes music…"
-	else
-		mkdir -pv ~/Music/iTunes
-		"•=> Copying iTunes music…"
-	fi
-	cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Music/iTunes/* ~/Music/iTunes
-	if [ -d ~/Downloads ]; then
-		echo "•=> Copying downloads…"
-	else
-		mkdir -v ~/Downloads
-		echo "•=> Copying downloads…"
-	fi
-	cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Downloads/* ~/Downloads
 else
 	echo "•=> Portable USB drive not found."
 fi
@@ -213,7 +217,7 @@ else
 	chflags nohidden ~/Library
 fi
 
-echo "• Killing stuff that is either unnecessary or that needs to have its preferences regenerated…"
+echo "• Killing and/or removing stuff that is either unnecessary or that needs to have its preferences regenerated…"
 killall -vz Popup
 killall -vz DFXLogin
 killall -vz ARDAgent
@@ -273,31 +277,43 @@ if [ "`whoami`" = "root" ]; then
 		launchctl unload -w /Library/Launch*/com.symantec.*.plist
 	fi
 	if [ -d /Library/StartupItems/SymProtector ]; then
-		rm -rf /Library/StartupItems/SymProtector
+		rm -rfv /Library/StartupItems/SymProtector
 	fi 
 	if [ -d /Library/StartupItems/SMC ]; then
-		rm -rf /Library/StartupItems/SMC
+		rm -rfv /Library/StartupItems/SMC
 	fi
 	if [ -d /Library/StartupItems/SymAutoProtect ]; then
-		rm -rf /Library/StartupItems/SymAutoProtect
+		rm -rfv /Library/StartupItems/SymAutoProtect
 	fi
 	if [ -d /Library/StartupItems/NortonMissedTasks ]; then
-		rm -rf /Library/StartupItems/NortonMissedTasks
+		rm -rfv /Library/StartupItems/NortonMissedTasks
 	fi
 	if [ -d /Library/StartupItems/KeyAccess ]; then
-		rm -rf /Library/StartupItems/KeyAccess
+		rm -rfv /Library/StartupItems/KeyAccess
+	fi
+	if [ -d /Library/Contextual\ Menu\ Items  ]; then
+		rm -rfv /Library/Contextual\ Menu\ Items
+	fi
+	if [ -d /Library/Documentaion/Help/Norton\ Help\ Scripts  ]; then
+		rm -rfv /Library/Documentaion/Help/Norton\ Help\ Scripts
 	fi
 	if [ -d /var/at/tabs ]; then
-		rm -rf /var/at/tabs
+		rm -rfv /var/at/tabs
+	fi
+	if [ ! -d /usr/lib/cron/tabs ]; then
+		mkdir -pv /usr/lib/cron/tabs
 	fi
 	if [ -d /var/db/com.symantec ]; then
-		rm -rf /var/db/com.symantec
+		rm -rfv /var/db/com.symantec
 	fi
 	if [ -d /var/db/RemoteManagement ]; then
-		rm -rf /var/db/RemoteManagement
+		rm -rfv /var/db/RemoteManagement
+	fi
+	if [ -d /Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic ]; then
+		rm -rfv /Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic
 	fi
 else
-	echo "Processes belonging to root left alone"
+	echo "Processes and other stuff belonging to root left alone"
 fi
 
 echo "• Doing final setup now…"
