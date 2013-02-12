@@ -265,63 +265,108 @@ if [ "`whoami`" = "root" ]; then
 	killall -vz parentalcontrolsd
 	killall -vz jamfAgent
 	killall -vz FindMyMacd
-    if [ ! -d /Volumes/NO\ NAME ]; then
-        killall -vz diskimages-helper
-    fi
-    if [ ! -z "`launchctl list | grep edu.northwestern.mmlc.MachineRenamer`" ]; then
-        launchctl remove edu.northwestern.mmlc.MachineRenamer
-    fi
-    if [ ! -z "`launchctl list | grep com.jamfsoftware.jamf.daemon`" ]; then
-        launchctl remove com.jamfsoftware.jamf.daemon
-    fi
-    if [ ! -z "`launchctl list | grep com.jamfsoftware.task.Every\ 5\ Minutes`" ]; then
-        launchctl remove com.jamfsoftware.task.Every\ 5\ Minutes
-    fi
-    if [ ! -z "`launchctl list | grep com.apple.familycontrols`" ]; then
-        launchctl remove com.apple.familycontrols
-    fi
+	if [ ! -d /Volumes/NO\ NAME ]; then
+		killall -vz diskimages-helper
+	else
+		echo "Not killing diskimages-helper because USB drive is plugged in"
+	fi
+	if [ ! -z "`launchctl list | grep edu.northwestern.mmlc.MachineRenamer`" ]; then
+		launchctl remove edu.northwestern.mmlc.MachineRenamer
+	else
+		echo "Job edu.northwestern.mmlc.MachineRenamer not found to remove from launchctl"
+	fi
+	if [ ! -z "`launchctl list | grep com.jamfsoftware.jamf.daemon`" ]; then
+		launchctl remove com.jamfsoftware.jamf.daemon
+	else
+		echo "Job com.jamfsoftware.jamf.daemon not found to remove from launchctl"
+	fi
+	if [ ! -z "`launchctl list | grep com.jamfsoftware.task.Every\ 5\ Minutes`" ]; then
+		launchctl remove com.jamfsoftware.task.Every\ 5\ Minutes
+	else
+		echo "Job com.jamfsoftware.task.Every 5 Minutes not found to remove from launchctl"
+	fi
+	if [ ! -z "`launchctl list | grep com.apple.familycontrols`" ]; then
+		launchctl remove com.apple.familycontrols
+	else
+		echo "Job com.apple.familycontrols not found to remove from launchctl"
+	fi
 	if [ -d /Library/LaunchDaemons ]; then
 		launchctl unload -w /Library/Launch*/com.jamfsoftware.*.plist
 		launchctl unload -w /Library/Launch*/edu.northwestern.*.plist
 		launchctl unload -w /Library/Launch*/com.apple.qmaster.*.plist
 		launchctl unload -w /Library/Launch*/com.faronics.*.plist
 		launchctl unload -w /Library/Launch*/com.symantec.*.plist
+	else
+		echo "No LaunchDaemons found to unload"
 	fi
 	if [ -d /Library/StartupItems/SymProtector ]; then
 		echo "rm -rfv `rm -rfv /Library/StartupItems/SymProtector`"
+	else
+		echo "SymProtector StartupItem not found to remove"
 	fi 
 	if [ -d /Library/StartupItems/SMC ]; then
 		echo "rm -rfv `rm -rfv /Library/StartupItems/SMC`"
+	else
+		echo "SMC StartupItem not found to remove"
 	fi
 	if [ -d /Library/StartupItems/SymAutoProtect ]; then
 		echo "rm -rfv `rm -rfv /Library/StartupItems/SymAutoProtect`"
+	else
+		echo "SymAutoProtect StartupItem not found to remove"
 	fi
 	if [ -d /Library/StartupItems/NortonMissedTasks ]; then
 		echo "rm -rfv `rm -rfv /Library/StartupItems/NortonMissedTasks`"
+	else
+		echo "NortonMissedTasks StartupItem not found to remove"
 	fi
 	if [ -d /Library/StartupItems/KeyAccess ]; then
 		echo "rm -rfv `rm -rfv /Library/StartupItems/KeyAccess`"
+	else
+		echo "SymProtector StartupItem not found to remove"
 	fi
 	if [ -d /Library/Contextual\ Menu\ Items  ]; then
 		echo "rm -rfv `rm -rfv /Library/Contextual\ Menu\ Items`"
+	else
+		echo "Contextual Menu Items not found to remove"
 	fi
-	if [ -d /Library/Documentaion/Help/Norton\ Help\ Scripts  ]; then
-		echo "rm -rfv `rm -rfv /Library/Documentaion/Help/Norton\ Help\ Scripts`"
+	if [ -d /Library/Documentation/Help/Norton\ Help\ Scripts  ]; then
+		echo "rm -rfv `rm -rfv /Library/Documentation/Help/Norton\ Help\ Scripts`"
+	else
+		echo "Didn't find Norton Help Scripts"
 	fi
 	if [ -d /var/at/tabs ]; then
 		echo "rm -rfv `rm -rfv /var/at/tabs`"
+	else
+		echo "/var/at/tabs not found to remove"
 	fi
 	if [ ! -d /usr/lib/cron/tabs ]; then
 		echo "mkdir -pv `mkdir -pv /usr/lib/cron/tabs`"
+	else
+		echo "/usr/lib/cron/tabs already exists."
 	fi
 	if [ -d /var/db/com.symantec ]; then
 		echo "rm -rfv `rm -rfv /var/db/com.symantec`"
+	else
+		echo "/var/db/com.symantec not found to remove"
 	fi
 	if [ -d /var/db/RemoteManagement ]; then
 		echo "rm -rfv `rm -rfv /var/db/RemoteManagement`"
+	else
+		echo "/var/db/RemoteManagement not found to remove"
 	fi
 	if [ -d /Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic ]; then
 		echo "rm -rfv `rm -rfv /Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic`"
+	else
+		echo "Classic version of InDesign not found to remove"
+	fi
+	if [ ! -z "`which mdfind`" ]; then
+		if [ -x /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister ]; then
+			mdfind -0 "kMDItemKind = 'Application'" | xargs -0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -lint -r -f -v
+		else
+			echo "lsregister not found, not regenerating LaunchServices"
+		fi
+	else
+		echo "mdfind not found"
 	fi
 else
 	echo "Processes and other stuff belonging to root left alone"
@@ -343,7 +388,7 @@ if [ -d /Volumes/NO\ NAME ]; then
 fi
 open /Applications/Utilities/Terminal.app
 if [ -d ~/deepfreeze ]; then
-    echo "rmdir ~/deepfreeze"
+	echo "rmdir ~/deepfreeze"
 	rmdir ~/deepfreeze
 fi
 if [ ! -z "`which purge`" ]; then
