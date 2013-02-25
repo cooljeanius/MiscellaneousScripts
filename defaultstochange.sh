@@ -406,7 +406,17 @@ open -g /System/Library/CoreServices/System\ Events.app
 open -g /System/Library/CoreServices/Image\ Events.app
 open -g /System/Library/CoreServices/Folder\ Actions\ Dispatcher.app
 osascript -e "tell application \"Finder\"" -e "empty trash" -e "end tell"
-find ./ -name .DS_Store -delete
+if [ "`whoami`" = "root" ]; then
+	find ./ -name .DS_Store -delete
+fi
+for directory in `find ~/*` ; do
+	if [ -d ${directory} ]; then
+		if [ -z "`ls -a ${directory}/*`" ]; then
+			echo "Making ${directory} not empty"
+			echo "#" >> ${directory}/.gitignore
+		fi
+	fi
+done
 if [ -d /Volumes/NO\ NAME ]; then
 	find /Volumes/NO\ NAME/ -name .DS_Store -delete
 fi
