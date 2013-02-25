@@ -230,7 +230,6 @@ killall -vz ScanNotification
 killall -vz Symantec\ QuickMenu
 killall -vz warmd_agent
 killall -vz cookied
-killall -vz lsboxd
 killall -vz CVMCompiler
 killall -vz GWAlert
 killall -vz Dock
@@ -251,6 +250,7 @@ if [ "`whoami`" = "root" ]; then
 	killall -vz smcdaemon
 	killall -vz qmasterd
 	killall -vz LiveUpdate
+	killall -vz lsboxd
 	killall -vz KeyAccess
 	killall -vz karl
 	killall -vz kass
