@@ -381,6 +381,9 @@ open -g /Applications/Utilities/Activity\ Monitor.app
 if [ -e ~/Applications/Jumpcut.app ]; then
 	open -g ~/Applications/Jumpcut.app
 fi
+open -g /System/Library/CoreServices/System\ Events.app
+open -g /System/Library/CoreServices/Image\ Events.app
+open -g /System/Library/CoreServices/Folder\ Actions\ Dispatcher.app
 osascript -e "tell application \"Finder\"" -e "empty trash" -e "end tell"
 find ./ -name .DS_Store -delete
 if [ -d /Volumes/NO\ NAME ]; then
