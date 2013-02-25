@@ -372,6 +372,27 @@ else
 	echo "Processes and other stuff belonging to root left alone"
 fi
 
+if [ -f ~/Library/Components ]; then
+	echo "rm -rfv `rm -rfv ~/Library/Components`"
+	echo "mkdir -pv `mkdir -pv ~/Library/Components`"
+	echo "#" >> ~/Library/Components/.gitignore
+fi
+if [ -f ~/Library/QuickLook ]; then
+	echo "rm -rfv `rm -rfv ~/Library/QuickLook`"
+	echo "mkdir -pv `mkdir -pv ~/Library/QuickLook`"
+	echo "#" >> ~/Library/QuickLook/.gitignore
+fi
+if [ -f ~/Library/KeyBindings ]; then
+	echo "rm -rfv `rm -rfv ~/Library/KeyBindings`"
+	echo "mkdir -pv `mkdir -pv ~/Library/KeyBindings`"
+	echo "#" >> ~/Library/KeyBindings/.gitignore
+fi
+if [ -f ~/Library/Application\ Support/iCloud ]; then
+	echo "rm -rfv `rm -rfv ~/Library/Application\ Support/iCloud`"
+	echo "mkdir -pv `mkdir -pv ~/Library/Application\ Support/iCloud`"
+	echo "#" >> ~/Library/Application\ Support/iCloud/.gitignore
+fi
+
 echo "• Doing final cleanup/setup now…"
 echo "whoami = `whoami`"
 echo "pwd = `pwd`"
