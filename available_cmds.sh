@@ -9,7 +9,7 @@ printf "\n"
 echo "Available commands:"
 printf "\n"
 
-export AVAILABLE_COMMANDS=$(echo $PATH | tr : \\n | xargs ls -1p | sort | tail -n $(($TOTAL_LINES - $((2 * $NUMBER_OF_PATH_DIRS)))) | tr \\n \ )
+export AVAILABLE_COMMANDS=$(echo $PATH | tr : \\n | xargs ls -1p | sort | tail -n $(($TOTAL_LINES - $((2 * $NUMBER_OF_PATH_DIRS)))) | uniq | tr \\n \ )
 
 for command in $AVAILABLE_COMMANDS ; do
 	if [ -x `which ${command}` ]; then
