@@ -372,6 +372,8 @@ else
 	echo "Processes and other stuff belonging to root left alone"
 fi
 
+# Do this even when not copying from USB; test -f (as opposed to test -e) ensures that it won't overwrite 
+# the copied stuff even if files were copied from the USB anyway
 if [ -f ~/Library/Components ]; then
 	echo "rm -rfv `rm -rfv ~/Library/Components`"
 	echo "mkdir -pv `mkdir -pv ~/Library/Components`"
@@ -402,13 +404,11 @@ open -g /Applications/Utilities/Activity\ Monitor.app
 if [ -e ~/Applications/Jumpcut.app ]; then
 	open -g ~/Applications/Jumpcut.app
 fi
-open -g /System/Library/CoreServices/System\ Events.app
-open -g /System/Library/CoreServices/Image\ Events.app
-open -g /System/Library/CoreServices/Folder\ Actions\ Dispatcher.app
-osascript -e "tell application \"Finder\"" -e "empty trash" -e "end tell"
+# ".DS_Store"s are annoying
 if [ "`whoami`" = "root" ]; then
 	find ./ -name .DS_Store -delete
 fi
+# This "unemptying" block is inspired by MacPorts's "destroot.keep_directory" thing
 for directory in `find ~/*` ; do
 	if [ -d ${directory} ]; then
 		if [ -z "`ls -a ${directory}/*`" ]; then
@@ -417,6 +417,12 @@ for directory in `find ~/*` ; do
 		fi
 	fi
 done
+open -g /System/Library/CoreServices/System\ Events.app
+open -g /System/Library/CoreServices/Image\ Events.app
+open -g /System/Library/CoreServices/Folder\ Actions\ Dispatcher.app
+# this has to go after the "unemptying" block instead of before because 
+# otherwise the Trash ends up with a file left in it
+osascript -e "tell application \"Finder\"" -e "empty trash" -e "end tell"
 if [ -d /Volumes/NO\ NAME ]; then
 	find /Volumes/NO\ NAME/ -name .DS_Store -delete
 fi
