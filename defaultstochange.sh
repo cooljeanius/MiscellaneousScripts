@@ -244,6 +244,7 @@ killall -vz AppleSpell.service
 killall -vz helpd
 killall -vz hiutil
 killall -vz AirPort\ Base\ Station\ Agent
+killall -vz ScreensharingAgent
 if [ "`whoami`" = "root" ]; then
 	killall -vz navx
 	killall -vz SymAutoProtect
