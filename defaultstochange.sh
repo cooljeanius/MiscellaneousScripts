@@ -409,6 +409,11 @@ fi
 if [ "`whoami`" = "root" ]; then
 	find ./ -name .DS_Store -delete
 fi
+# This block needs to go before the "unemptying" block because otherwise the `rmdir` fails
+if [ -d ~/deepfreeze ]; then
+	echo "rmdir ~/deepfreeze"
+	rmdir ~/deepfreeze
+fi
 # This "unemptying" block is inspired by MacPorts's "destroot.keep_directory" thing
 for directory in `find ~/*` ; do
 	if [ -d ${directory} ]; then
@@ -428,10 +433,6 @@ if [ -d /Volumes/NO\ NAME ]; then
 	find /Volumes/NO\ NAME/ -name .DS_Store -delete
 fi
 open /Applications/Utilities/Terminal.app
-if [ -d ~/deepfreeze ]; then
-	echo "rmdir ~/deepfreeze"
-	rmdir ~/deepfreeze
-fi
 if [ ! -z "`which purge`" ]; then
     purge
 fi
