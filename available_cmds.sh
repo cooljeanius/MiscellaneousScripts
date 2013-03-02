@@ -21,6 +21,7 @@ fi
 
 export AVAILABLE_COMMANDS=$(echo $PATH | tr : \\n | xargs ls -1p | sort | tail -n $(($TOTAL_LINES - $((2 * $NUMBER_OF_PATH_DIRS)))) | uniq | tr \\n \ )
 
+LOOP_COUNTER=0
 for command in $AVAILABLE_COMMANDS ; do
 	if [ -x `which ${command}` ]; then
 		if [ "$1" == "-v" ]; then
@@ -28,10 +29,16 @@ for command in $AVAILABLE_COMMANDS ; do
 		else
 			printf "${command} "
 		fi
+		LOOP_COUNTER=$((($LOOP_COUNTER + 1)))
 	fi
 done
 
 if [ "$1" != -v ]; then
+	printf "\n"
+fi
+if [ "$1" != -q ]; then
+	printf "\n"
+	printf "$LOOP_COUNTER commands found."
 	printf "\n"
 fi
 printf "\n"
