@@ -360,10 +360,16 @@ if [ "`whoami`" = "root" ]; then
 		if [ -d /Library/Application\ Support/Adobe/Installers/AdobeInDesign7AppBase/ExtraFiles ]; then
 			echo "rm -rfv `rm -rfv /Library/Application\ Support/Adobe/Installers/AdobeInDesign7AppBase/ExtraFiles`"
 		fi
+		if [ -d /Library/Application\ Support/JAMF/Composer/Sources/CS5\ Design\ Premium\ /ROOT/Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic ]; then
+			echo "rm -rfv `rm -rfv /Library/Application\ Support/JAMF/Composer/Sources/CS5\ Design\ Premium\ /ROOT/Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic`"
+		fi
 	else
 		echo "Classic version of InDesign not found to remove"
 	fi
 	if [ ! -z "`which mdfind`" ]; then
+		if [ ! -z "`which mdutil`" ]; then
+			mdutil -Ev /
+		fi
 		if [ -x /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister ]; then
 			mdfind -0 "kMDItemKind = 'Application'" | xargs -0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -lint -r -f -v
 		else
@@ -446,5 +452,5 @@ elif [ -f ~/.bash_profile ]; then
 elif [ -f ~/.bashrc ]; then
 	. ~/.bashrc
 fi
-bash
+login -pfl `whoami` /bin/bash -c 'exec -la sh /bin/sh'
 
