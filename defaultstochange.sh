@@ -357,6 +357,9 @@ if [ "`whoami`" = "root" ]; then
 	fi
 	if [ -d /Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic ]; then
 		echo "rm -rfv `rm -rfv /Applications/Adobe\ InDesign\ CS5/Adobe\ InDesign\ CS5.app/Contents/MacOSClassic`"
+		if [ -d /Library/Application\ Support/Adobe/Installers/AdobeInDesign7AppBase/ExtraFiles ]; then
+			echo "rm -rfv `rm -rfv /Library/Application\ Support/Adobe/Installers/AdobeInDesign7AppBase/ExtraFiles`"
+		fi
 	else
 		echo "Classic version of InDesign not found to remove"
 	fi
