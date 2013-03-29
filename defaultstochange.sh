@@ -151,7 +151,8 @@ if [ -d /Volumes/NO\ NAME/ ]; then
 		if [ -d ~/Applications ]; then
 			echo "•=> Copying applications…"
 		else
-			echo "mkdir -v `mkdir -v ~/Applications`"
+			echo "mkdir -v ~/Applications"
+			mkdir -v ~/Applications
 			echo "•=> Copying applications…"
 		fi
 		cp -Rvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Applications/* ~/Applications
@@ -161,7 +162,8 @@ if [ -d /Volumes/NO\ NAME/ ]; then
 		if [ -d ~/Library ]; then
 			echo "•=> Copying Library items…"
 		else
-			"mkdir -v `mkdir -v ~/Library`"
+			echo "mkdir -v ~/Library"
+			mkdir -v ~/Library
 			echo "•=> Copying Library items…"
 		fi
 		if [ -f ~/Library/Components ]; then
@@ -180,6 +182,7 @@ if [ -d /Volumes/NO\ NAME/ ]; then
 		if [ -d ~/Music/iTunes ]; then
 			echo "•=> Copying iTunes music…"
 		else
+			echo "mkdir -pv ~/Music/iTunes"
 			mkdir -pv ~/Music/iTunes
 			"•=> Copying iTunes music…"
 		fi
@@ -187,7 +190,8 @@ if [ -d /Volumes/NO\ NAME/ ]; then
 		if [ -d ~/Downloads ]; then
 			echo "•=> Copying downloads…"
 		else
-			"mkdir -v `mkdir -v ~/Downloads`"
+			echo "mkdir -v ~/Downloads"
+			mkdir -v ~/Downloads
 			echo "•=> Copying downloads…"
 		fi
 		cp -Rfvp /Volumes/NO\ NAME/Portable_Between_School_Library_Computers/Downloads/* ~/Downloads
@@ -341,7 +345,8 @@ if [ "`whoami`" = "root" ]; then
 		echo "/var/at/tabs not found to remove"
 	fi
 	if [ ! -d /usr/lib/cron/tabs ]; then
-		echo "mkdir -pv `mkdir -pv /usr/lib/cron/tabs`"
+		echo "mkdir -pv /usr/lib/cron/tabs"
+		mkdir -pv /usr/lib/cron/tabs
 	else
 		echo "/usr/lib/cron/tabs already exists."
 	fi
@@ -386,22 +391,26 @@ fi
 # the copied stuff even if files were copied from the USB anyway
 if [ -f ~/Library/Components ]; then
 	echo "rm -rfv `rm -rfv ~/Library/Components`"
-	echo "mkdir -pv `mkdir -pv ~/Library/Components`"
+	echo "mkdir -pv ~/Library/Components"
+	mkdir -pv ~/Library/Components
 	echo "#" >> ~/Library/Components/.gitignore
 fi
 if [ -f ~/Library/QuickLook ]; then
 	echo "rm -rfv `rm -rfv ~/Library/QuickLook`"
-	echo "mkdir -pv `mkdir -pv ~/Library/QuickLook`"
+	echo "mkdir -pv ~/Library/QuickLook"
+	mkdir -pv ~/Library/QuickLook
 	echo "#" >> ~/Library/QuickLook/.gitignore
 fi
 if [ -f ~/Library/KeyBindings ]; then
 	echo "rm -rfv `rm -rfv ~/Library/KeyBindings`"
-	echo "mkdir -pv `mkdir -pv ~/Library/KeyBindings`"
+	echo "mkdir -pv ~/Library/KeyBindings"
+	mkdir -pv ~/Library/KeyBindings
 	echo "#" >> ~/Library/KeyBindings/.gitignore
 fi
 if [ -f ~/Library/Application\ Support/iCloud ]; then
 	echo "rm -rfv `rm -rfv ~/Library/Application\ Support/iCloud`"
-	echo "mkdir -pv `mkdir -pv ~/Library/Application\ Support/iCloud`"
+	echo "mkdir -pv ~/Library/Application\ Support/iCloud"
+	mkdir -pv ~/Library/Application\ Support/iCloud
 	echo "#" >> ~/Library/Application\ Support/iCloud/.gitignore
 fi
 
@@ -452,5 +461,7 @@ elif [ -f ~/.bash_profile ]; then
 elif [ -f ~/.bashrc ]; then
 	. ~/.bashrc
 fi
+
+# this is the command that the terminal usually opens with
 login -pfl `whoami` /bin/bash -c 'exec -la sh /bin/sh'
 
