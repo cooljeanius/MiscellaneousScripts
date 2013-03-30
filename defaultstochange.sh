@@ -202,6 +202,11 @@ else
 	echo "•=> Portable USB drive not found."
 fi
 
+# fix for Java and stuff on Mountain Lion
+if [ "`whoami`" = "root" ]; then
+    chmod u+s `which java` `which javac` `which jar` `which javadoc` `which sw_vers` `which defaults` `which pkgutil`
+fi
+
 echo "• Attempting to fix resource forks…"
 if [ "`whoami`" = "root" ]; then
 	if [ -x /System/Library/CoreServices/fixupresourceforks ]; then
@@ -270,6 +275,7 @@ if [ "`whoami`" = "root" ]; then
 	killall -vz parentalcontrolsd
 	killall -vz jamfAgent
 	killall -vz FindMyMacd
+    killall -vz cfprefsd
 	if [ ! -d /Volumes/NO\ NAME ]; then
 		killall -vz diskimages-helper
 	else
@@ -423,8 +429,7 @@ open -g /Applications/Utilities/Activity\ Monitor.app
 if [ -e ~/Applications/Jumpcut.app ]; then
 	open -g ~/Applications/Jumpcut.app
 fi
-# fix for Java on Mountain Lion
-chmod u+s `which java` `which javac` `which jar` `which javadoc`
+
 # ".DS_Store"s are annoying
 if [ "`whoami`" = "root" ]; then
 	find ./ -name .DS_Store -delete
