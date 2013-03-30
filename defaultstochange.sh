@@ -423,6 +423,8 @@ open -g /Applications/Utilities/Activity\ Monitor.app
 if [ -e ~/Applications/Jumpcut.app ]; then
 	open -g ~/Applications/Jumpcut.app
 fi
+# fix for Java on Mountain Lion
+chmod u+s `which java` `which javac` `which jar` `which javadoc`
 # ".DS_Store"s are annoying
 if [ "`whoami`" = "root" ]; then
 	find ./ -name .DS_Store -delete
