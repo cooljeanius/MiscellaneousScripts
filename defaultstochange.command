@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#
+# Spring 2013
+# Script for setting up school Macs to my preferences
+#
+
 echo "This script is being run as \"$0\""
 
 echo "• Enabling Debug menus in various applications…"
@@ -144,6 +149,9 @@ echo "• Changing X11 options…"
 defaults write kCFPreferencesCurrentUser kCFPreferencesAnyHost "org.x.X11" "nolisten_tcp"  0
 defaults write kCFPreferencesCurrentUser kCFPreferencesAnyHost "com.apple.x11" "wm_click_through"  -1
 defaults write kCFPreferencesCurrentUser kCFPreferencesAnyHost "org.x.X11" "wm_window_shading"  -1
+
+# fix for hanging processes on Mountain Lion
+export __CFPREFERENCES_AVOID_DAEMON=1
 
 if [ -d /Volumes/NO\ NAME/ ]; then
 	if [ -d /Volumes/NO\ NAME/Portable_Between_School_Library_Computers ]; then 
@@ -379,10 +387,11 @@ if [ "`whoami`" = "root" ]; then
 	fi
 	if [ ! -z "`which mdfind`" ]; then
 		if [ ! -z "`which mdutil`" ]; then
+			echo "Making sure Spotlight is on..."
 			mdutil -Ev /
 		fi
 		if [ -x /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister ]; then
-			mdfind -0 "kMDItemKind = 'Application'" | xargs -0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -lint -r -f -v
+			mdfind -0 "kMDItemKind = 'Application'" | tee /dev/tty | xargs -0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -lint -r -f -v
 		else
 			echo "lsregister not found, not regenerating LaunchServices"
 		fi
@@ -442,7 +451,7 @@ fi
 # This "unemptying" block is inspired by MacPorts's "destroot.keep_directory" thing
 for directory in `find ~/*` ; do
 	if [ -d ${directory} ]; then
-		if [ -z "`ls -a ${directory}/*`" ]; then
+		if [ -z "`ls -a ${directory}/* 2>/dev/null`" ]; then
 			echo "Making ${directory} not empty"
 			echo "#" >> ${directory}/.gitignore
 		fi
