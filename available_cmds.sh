@@ -29,6 +29,7 @@ for command in $AVAILABLE_COMMANDS ; do
 		else
 			printf "${command} "
 		fi
+		# I haven't bothered to check if bash has a `++` thing like C yet...
 		LOOP_COUNTER=$((($LOOP_COUNTER + 1)))
 	fi
 done
