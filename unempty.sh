@@ -1,6 +1,9 @@
+#!/bin/bash
+
 if [ -x $(which clear) ]; then
 	clear
 fi
+
 for directory in $(find ~/*) ; do
 	if [ -d ${directory} ]; then
 		echo "Entering ${directory}..."
