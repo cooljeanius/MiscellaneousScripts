@@ -3,7 +3,7 @@
 
 # For some reason backticks don't work here, so I have to use $(...) instead
 export NUMBER_OF_PATH_DIRS=$(echo $PATH | tr : \\n | wc -l)
-export TOTAL_LINES=$(echo $PATH | tr : \\n | xargs ls -1p | wc -l)
+export TOTAL_LINES=$(echo $PATH | tr : \\n | xargs ls -1p 2>/dev/null | wc -l)
 
 printf "\n"
 if [ "$1" == "--help" ]; then
@@ -19,7 +19,7 @@ if [ "$1" != "-q" ]; then
 	printf "\n"
 fi
 
-export AVAILABLE_COMMANDS=$(echo $PATH | tr : \\n | xargs ls -1p | sort | tail -n $(($TOTAL_LINES - $((2 * $NUMBER_OF_PATH_DIRS)))) | uniq | tr \\n \ )
+export AVAILABLE_COMMANDS=$(echo $PATH | tr : \\n | xargs ls -1p 2>/dev/null | sort | tail -n $(($TOTAL_LINES - $((2 * $NUMBER_OF_PATH_DIRS)))) | uniq | tr \\n \ )
 
 LOOP_COUNTER=0
 for command in $AVAILABLE_COMMANDS ; do
@@ -29,7 +29,7 @@ for command in $AVAILABLE_COMMANDS ; do
 		else
 			printf "${command} "
 		fi
-		# I haven't bothered to check if bash has a `++` thing like C yet...
+		# I have NOT bothered to check if bash has a `++` thing like C yet...
 		LOOP_COUNTER=$((($LOOP_COUNTER + 1)))
 	fi
 done
