@@ -1,20 +1,20 @@
 #!/bin/sh -x
-# Originally taken from the Mono installer DMG. Edited to be more verbose and stuff.
+# Originally taken from the Mono installer DMG.
+# Edited to be more verbose and stuff.
 
 set -ex
 
-#This script removes Mono from an OS X System. 
-# It must be run as root
+#This script removes Mono from an OS X System.
+# It must be run as root.
 
-if [ "`whoami`" != "root" ]; then
-  echo "This script must be run as root."
-	exit 1
+if [ "x`whoami`" != "xroot" ]; then
+   echo "This script must be run as root."
+   exit 1
 fi
 
 rm -rv /Library/Frameworks/Mono.framework
 
-# In 10.6+ the receipts are stored here
-
+# In 10.6+ the receipts are stored here:
 rm -v /var/db/receipts/com.ximian.mono*
 
 for dir in /usr/bin /usr/share/man/man1 /usr/share/man/man3 /usr/share/man/man5; do
