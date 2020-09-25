@@ -1,5 +1,11 @@
 #!/bin/bash
 
+DIR_TO_UNEMPTY=$1
+if [ -z "${DIR_TO_UNEMPTY}" ]; then
+    DIR_TO_UNEMPTY=~
+fi
+echo "DIR_TO_UNEMPTY=${DIR_TO_UNEMPTY}"
+
 if [ -x "$(which clear)" ]; then
 	clear
 	echo "finding directories to unempty..."
@@ -7,10 +13,11 @@ if [ -x "$(which clear)" ]; then
 	echo "(also hope you have a large scrollback buffer)"
 fi
 
-for directory in $(find ~/*) ; do
+for directory in $(find "${DIR_TO_UNEMPTY}"/*); do
+    echo "${directory}"
 	if [ -d "${directory}" ]; then
 		echo "Entering ${directory}..."
-		cd "${directory}"
+		cd "${directory}" || exit
 		directoryContents=$(ls -a "${directory}"/* 2>/dev/null)
 		if [ -z "${directoryContents}" ]; then
 			if [ ! -f "${directory}"/.gitignore ]; then
