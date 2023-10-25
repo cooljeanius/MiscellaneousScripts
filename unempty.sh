@@ -18,7 +18,7 @@ for directory in $(find "${DIR_TO_UNEMPTY}"/*); do
 	if [ -d "${directory}" ]; then
 		echo "Entering ${directory}..."
 		cd "${directory}" || exit
-		directoryContents=$(ls -a "${directory}"/* 2>/dev/null)
+		directoryContents=$(ls -a "${directory}"/* 2>/dev/null | grep -v .DS_Store)
 		if [ -z "${directoryContents}" ]; then
 			if [ ! -f "${directory}"/.gitignore ]; then
 				echo "  VVV"
