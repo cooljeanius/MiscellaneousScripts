@@ -21,6 +21,10 @@ for directory in $(find "${DIR_TO_UNEMPTY}"/*); do
 		directoryContents=$(ls -a "${directory}"/* 2>/dev/null | grep -v .DS_Store)
 		if [ -z "${directoryContents}" ]; then
 			if [ "$(basename "${directory}")" = ".deps" ]; then
+				echo "skipping unemptying .deps dir"
+				rmdir "${directory}" 2>&1 || stat "${directory}"
+			elif [ "$(basename "${directory}")" = ".libs" ]; then
+				echo "skipping unemptying .libs dir"
 				rmdir "${directory}" 2>&1 || stat "${directory}"
 			elif [ ! -f "${directory}"/.gitignore ]; then
 				echo "  VVV"
