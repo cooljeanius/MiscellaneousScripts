@@ -20,7 +20,9 @@ for directory in $(find "${DIR_TO_UNEMPTY}"/*); do
 		cd "${directory}" || exit
 		directoryContents=$(ls -a "${directory}"/* 2>/dev/null | grep -v .DS_Store)
 		if [ -z "${directoryContents}" ]; then
-			if [ ! -f "${directory}"/.gitignore ]; then
+			if [ "$(basename "${directory}")" = ".deps" ]; then
+				rmdir "${directory}" 2>&1 || stat "${directory}"
+			elif [ ! -f "${directory}"/.gitignore ]; then
 				echo "  VVV"
 				echo "• Making '${directory}' not empty..."
 				echo "  ^^^"
@@ -31,7 +33,7 @@ for directory in $(find "${DIR_TO_UNEMPTY}"/*); do
 		else
 			echo "'${directory}' is not empty, skipping..."
 		fi
-	# no "else" here; that would make no sense
+	# no "else" here; that would just be too noisy to note all non-directories
 	fi
 done
 
