@@ -13,11 +13,13 @@ if [ -x "$(which clear)" ]; then
 	echo "(also hope you have a large scrollback buffer)"
 fi
 
-for directory in $(find "${DIR_TO_UNEMPTY}"/*); do
+# shellcheck disable=SC2044
+for directory in $(find "${DIR_TO_UNEMPTY}"/* -perm +r -user "$(whoami)"); do
     echo "${directory}"
 	if [ -d "${directory}" ]; then
 		echo "Entering ${directory}..."
 		cd "${directory}" || exit
+		# shellcheck disable=SC2010
 		directoryContents=$(ls -a "${directory}"/* 2>/dev/null | grep -v .DS_Store)
 		if [ -z "${directoryContents}" ]; then
 			if [ "$(basename "${directory}")" = ".deps" ]; then
