@@ -14,7 +14,7 @@ if [ -x "$(which clear)" ]; then
 fi
 
 # shellcheck disable=SC2044
-for directory in $(find "${DIR_TO_UNEMPTY}"/* -perm +r -user "$(whoami)"); do
+for directory in $(find "${DIR_TO_UNEMPTY}"/* -user "$(whoami)"); do
     echo "${directory}"
 	if [ -d "${directory}" ]; then
 		echo "Entering ${directory}..."
