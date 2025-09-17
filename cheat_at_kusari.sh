@@ -15,4 +15,5 @@ for letter in $(perl -E 'say for a..z'); do
 done
 
 # TODO: calculate which ending letter has the lowest nonzero total
-# then do `grep -e "^$1.*${that_letter}$" /usr/share/dict/words` for it
+
+echo "do \"grep -e \"^$1.*\${that_letter}$\" /usr/share/dict/words\" on whichever of those looks interesting"
